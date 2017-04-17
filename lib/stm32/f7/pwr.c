@@ -55,12 +55,12 @@ void pwr_enable_overdrive(void)
 {
 	PWR_CR1 |= PWR_CR1_ODEN;
 	while (!(PWR_CSR1 & PWR_CSR1_ODRDY));
-	PWR_CR1 |= PWR_CR1_ODSW;
+	PWR_CR1 |= PWR_CR1_ODSWEN;
 	while (!(PWR_CSR1 & PWR_CSR1_ODSWRDY));
 }
 
 void pwr_disable_overdrive(void)
 {
-	PWR_CR1 &= ~(PWR_CR1_ODEN | PWR_CR1_ODSW);
+	PWR_CR1 &= ~(PWR_CR1_ODEN | PWR_CR1_ODSWEN);
 	while (!(PWR_CSR1 & PWR_CSR1_ODSWRDY));
 }

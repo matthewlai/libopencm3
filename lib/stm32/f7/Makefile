@@ -42,7 +42,7 @@ ARFLAGS		= rcs
 
 OBJS		= flash.o rcc.o gpio.o gpio_common_all.o gpio_common_f0234.o
 
-OBJS		+= rcc_common_all.o
+OBJS		+= rcc_common_all.o rcc.o
 
 OBJS		+= rng_common_v1.o
 

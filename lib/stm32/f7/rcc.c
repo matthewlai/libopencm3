@@ -340,6 +340,7 @@ void rcc_clock_setup_hse_3v3(const struct rcc_clock_scale *clock)
 	rcc_osc_on(RCC_HSE);
 	rcc_wait_for_osc_ready(RCC_HSE);
 
+	rcc_periph_clock_enable(RCC_PWR);
 	pwr_set_vos_scale(clock->vos_scale);
 
 	if (clock->overdrive) {

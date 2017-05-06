@@ -423,7 +423,10 @@ stm32f3 END ROM_OFF=0x08000000 RAM_OFF=0x20000000 CPU=cortex-m4 FPU=hard-fpv4-sp
 stm32f4 END ROM_OFF=0x08000000 RAM_OFF=0x20000000 CPU=cortex-m4 FPU=hard-fpv4-sp-d16
 
 # RAM offsets vary
-stm32f7 END ROM_OFF=0x00200000 CPU=cortex-m7 CCM_OFF=0x20000000 FPU=hard-fpv5-sp-d16
+# Flash has a separate ITCM interface that is much faster than through the standard
+# address, but the ITCM interface is read-only, and we still need to program into
+# the standard address
+stm32f7 END ROM_OFF=0x08000000 ROM_CCM_OFF=0x00200000 CCM_OFF=0x20000000 CPU=cortex-m7 FPU=hard-fpv5-sp-d16
 
 stm32l0 END ROM_OFF=0x08000000 RAM_OFF=0x20000000 CPU=cortex-m0plus FPU=soft
 stm32l1 END ROM_OFF=0x08000000 RAM_OFF=0x20000000 CPU=cortex-m3 FPU=soft

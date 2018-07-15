@@ -30,8 +30,12 @@
 #       include <libopencm3/stm32/f3/spi.h>
 #elif defined(STM32F4)
 #       include <libopencm3/stm32/f4/spi.h>
+#elif defined(STM32L0)
+#       include <libopencm3/stm32/l0/spi.h>
 #elif defined(STM32L1)
 #       include <libopencm3/stm32/l1/spi.h>
+#elif defined(STM32L4)
+#       include <libopencm3/stm32/l4/spi.h>
 #else
 #       error "stm32 family not defined."
 #endif

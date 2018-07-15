@@ -1,4 +1,5 @@
-/** @addtogroup usart_file
+/** @addtogroup usart_file USART peripheral API
+@ingroup peripheral_apis
 
 @author @htmlonly &copy; @endhtmlonly 2009 Uwe Hermann <uwe@hermann-uwe.de>
 
@@ -50,13 +51,12 @@ void usart_set_baudrate(uint32_t usart, uint32_t baud)
 {
 	uint32_t clock = rcc_apb1_frequency;
 
-#if defined STM32F2 || defined STM32F4
-	if ((usart == USART1) ||
-	    (usart == USART6)) {
-		clock = rcc_apb2_frequency;
-	}
-#else
-	if (usart == USART1) {
+#if defined USART1
+	if ((usart == USART1)
+#if defined USART6
+		|| (usart == USART6)
+#endif
+		) {
 		clock = rcc_apb2_frequency;
 	}
 #endif

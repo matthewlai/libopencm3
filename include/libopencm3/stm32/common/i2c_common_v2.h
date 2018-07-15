@@ -137,24 +137,9 @@ specific memorymap.h header before including this header file.*/
 /* ANFOFF: Analog noise filter OFF */
 #define I2C_CR1_ANFOFF			(1 << 12)
 
-/* DNF[3:0]: Digital noise filter */
-#define I2C_CR1_DNF_DISABLED		(0x0 << 8)
-#define I2C_CR1_DNF_UP_1_TI2CCLK	(0x1 << 8)
-#define I2C_CR1_DNF_UP_2_TI2CCLK	(0x2 << 8)
-#define I2C_CR1_DNF_UP_3_TI2CCLK	(0x3 << 8)
-#define I2C_CR1_DNF_UP_4_TI2CCLK	(0x4 << 8)
-#define I2C_CR1_DNF_UP_5_TI2CCLK	(0x5 << 8)
-#define I2C_CR1_DNF_UP_6_TI2CCLK	(0x6 << 8)
-#define I2C_CR1_DNF_UP_7_TI2CCLK	(0x7 << 8)
-#define I2C_CR1_DNF_UP_8_TI2CCLK	(0x8 << 8)
-#define I2C_CR1_DNF_UP_9_TI2CCLK	(0x9 << 8)
-#define I2C_CR1_DNF_UP_10_TI2CCLK	(0xA << 8)
-#define I2C_CR1_DNF_UP_11_TI2CCLK	(0xB << 8)
-#define I2C_CR1_DNF_UP_12_TI2CCLK	(0xC << 8)
-#define I2C_CR1_DNF_UP_13_TI2CCLK	(0xD << 8)
-#define I2C_CR1_DNF_UP_14_TI2CCLK	(0xE << 8)
-#define I2C_CR1_DNF_UP_15_TI2CCLK	(0xF << 8)
-#define I2C_CR1_DNF_MASK                (0xF << 8)
+/** DNF[3:0]: Digital noise filter. */
+#define I2C_CR1_DNF_MASK		0xF
+#define I2C_CR1_DNF_SHIFT		8
 
 /* ERRIE: Error interrupts enable */
 #define I2C_CR1_ERRIE			(1 << 7)
@@ -169,7 +154,7 @@ specific memorymap.h header before including this header file.*/
 #define I2C_CR1_NACKIE			(1 << 4)
 
 /* ADDRIE: Address match Interrupt enable (slave only) */
-#define I2C_CR1_DDRIE			(1 << 3)
+#define I2C_CR1_ADDRIE			(1 << 3)
 
 /* RXIE: RX Interrupt enable */
 #define I2C_CR1_RXIE			(1 << 2)
@@ -386,6 +371,16 @@ specific memorymap.h header before including this header file.*/
 
 /* --- I2C function prototypes---------------------------------------------- */
 
+/**
+ * I2C speed modes.
+ */
+enum i2c_speeds {
+	i2c_speed_sm_100k,
+	i2c_speed_fm_400k,
+	i2c_speed_fmp_1m,
+	i2c_speed_unknown
+};
+
 BEGIN_DECLS
 
 void i2c_reset(uint32_t i2c);
@@ -431,6 +426,7 @@ void i2c_disable_rxdma(uint32_t i2c);
 void i2c_enable_txdma(uint32_t i2c);
 void i2c_disable_txdma(uint32_t i2c);
 void i2c_transfer7(uint32_t i2c, uint8_t addr, uint8_t *w, size_t wn, uint8_t *r, size_t rn);
+void i2c_set_speed(uint32_t i2c, enum i2c_speeds speed, uint32_t clock_megahz);
 
 END_DECLS
 

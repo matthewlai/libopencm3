@@ -64,6 +64,9 @@ void rcc_osc_ready_int_clear(enum rcc_osc osc)
 	case RCC_LSI:
 		RCC_CICR |= RCC_CICR_LSIRDYC;
 		break;
+	case RCC_HSI48:
+		RCC_CICR |= RCC_CICR_HSI48RDYC;
+		break;
 	}
 }
 
@@ -87,6 +90,9 @@ void rcc_osc_ready_int_enable(enum rcc_osc osc)
 		break;
 	case RCC_LSI:
 		RCC_CIER |= RCC_CIER_LSIRDYIE;
+		break;
+	case RCC_HSI48:
+		RCC_CIER |= RCC_CIER_HSI48RDYIE;
 		break;
 	}
 }
@@ -112,6 +118,9 @@ void rcc_osc_ready_int_disable(enum rcc_osc osc)
 	case RCC_LSI:
 		RCC_CIER &= ~RCC_CIER_LSIRDYIE;
 		break;
+	case RCC_HSI48:
+		RCC_CIER &= ~RCC_CIER_HSI48RDYIE;
+		break;
 	}
 }
 
@@ -135,6 +144,9 @@ int rcc_osc_ready_int_flag(enum rcc_osc osc)
 		break;
 	case RCC_LSI:
 		return ((RCC_CIFR & RCC_CIFR_LSIRDYF) != 0);
+		break;
+	case RCC_HSI48:
+		return ((RCC_CIFR & RCC_CIFR_HSI48RDYF) != 0);
 		break;
 	}
 	return false;
@@ -166,6 +178,8 @@ bool rcc_is_osc_ready(enum rcc_osc osc)
 		return RCC_BDCR & RCC_BDCR_LSERDY;
 	case RCC_LSI:
 		return RCC_CSR & RCC_CSR_LSIRDY;
+	case RCC_HSI48:
+		return RCC_CRRCR & RCC_CRRCR_HSI48RDY;
 	}
 	return false;
 }
@@ -221,6 +235,9 @@ void rcc_osc_on(enum rcc_osc osc)
 	case RCC_LSI:
 		RCC_CSR |= RCC_CSR_LSION;
 		break;
+	case RCC_HSI48:
+		RCC_CRRCR |= RCC_CRRCR_HSI48ON;
+		break;
 	}
 }
 
@@ -245,6 +262,9 @@ void rcc_osc_off(enum rcc_osc osc)
 	case RCC_LSI:
 		RCC_CSR &= ~RCC_CSR_LSION;
 		break;
+	case RCC_HSI48:
+		RCC_CRRCR &= ~RCC_CRRCR_HSI48ON;
+		break;
 	}
 }
 
@@ -256,42 +276,6 @@ void rcc_css_enable(void)
 void rcc_css_disable(void)
 {
 	RCC_CR &= ~RCC_CR_CSSON;
-}
-
-void rcc_osc_bypass_enable(enum rcc_osc osc)
-{
-	switch (osc) {
-	case RCC_HSE:
-		RCC_CR |= RCC_CR_HSEBYP;
-		break;
-	case RCC_LSE:
-		RCC_BDCR |= RCC_BDCR_LSEBYP;
-		break;
-	case RCC_PLL:
-	case RCC_HSI16:
-	case RCC_MSI:
-	case RCC_LSI:
-		/* Do nothing, only HSE/LSE allowed here. */
-		break;
-	}
-}
-
-void rcc_osc_bypass_disable(enum rcc_osc osc)
-{
-	switch (osc) {
-	case RCC_HSE:
-		RCC_CR &= ~RCC_CR_HSEBYP;
-		break;
-	case RCC_LSE:
-		RCC_BDCR &= ~RCC_BDCR_LSEBYP;
-		break;
-	case RCC_PLL:
-	case RCC_HSI16:
-	case RCC_MSI:
-	case RCC_LSI:
-		/* Do nothing, only HSE/LSE allowed here. */
-		break;
-	}
 }
 
 void rcc_set_sysclk_source(uint32_t clk)
@@ -342,7 +326,7 @@ void rcc_set_hpre(uint32_t hpre)
 void rcc_set_main_pll(uint32_t source, uint32_t pllm, uint32_t plln, uint32_t pllp,
 	uint32_t pllq, uint32_t pllr)
 {
-	RCC_PLLCFGR = (pllm << RCC_PLLCFGR_PLLM_SHIFT) |
+	RCC_PLLCFGR = (RCC_PLLCFGR_PLLM(pllm) << RCC_PLLCFGR_PLLM_SHIFT) |
 		(plln << RCC_PLLCFGR_PLLN_SHIFT) |
 		(pllp) |
 		(source << RCC_PLLCFGR_PLLSRC_SHIFT) |

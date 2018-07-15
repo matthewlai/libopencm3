@@ -55,7 +55,7 @@ completion of a previous data write operation.
 
 static inline void flash_pipeline_stall(void)
 {
-	asm volatile("dsb":::"memory");
+	__asm__ volatile("dsb":::"memory");
 }
 
 /*---------------------------------------------------------------------------*/
@@ -434,7 +434,8 @@ void flash_program_byte(uint32_t address, uint8_t data)
 /*---------------------------------------------------------------------------*/
 /** @brief Program a Data Block to FLASH
 
-This programs an arbitrary length data block to FLASH memory.
+This programs an arbitrary length data block to FLASH memory. All the addresses
+written to must have been erased (by calling flash_erase_sector).
 The program error flag should be checked separately for the event that memory
 was not properly erased.
 

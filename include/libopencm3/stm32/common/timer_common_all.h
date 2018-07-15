@@ -953,6 +953,9 @@ depending on the level of the complementary input. */
 
 /* --- TIMx_CCER values ---------------------------------------------------- */
 
+/* CC4NP: Capture/compare 4 complementary output polarity */
+#define TIM_CCER_CC4NP			(1 << 15)
+
 /* CC4P: Capture/compare 4 output polarity */
 #define TIM_CCER_CC4P			(1 << 13)
 
@@ -1167,7 +1170,6 @@ enum tim_et_pol {
 
 BEGIN_DECLS
 
-void timer_reset(uint32_t timer_peripheral);
 void timer_enable_irq(uint32_t timer_peripheral, uint32_t irq);
 void timer_disable_irq(uint32_t timer_peripheral, uint32_t irq);
 bool timer_interrupt_source(uint32_t timer_peripheral, uint32_t flag);
@@ -1264,4 +1266,3 @@ END_DECLS
 #endif
 /** @endcond */
 /**@}*/
-

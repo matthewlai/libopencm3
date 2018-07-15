@@ -69,12 +69,10 @@
 
 /* --- FLASH Keys -----------------------------------------------------------*/
 
-#define FLASH_KEYR_KEY1			((uint32_t)0x45670123)
-#define FLASH_KEYR_KEY2			((uint32_t)0xcdef89ab)
-#define FLASH_OPTKEYR_KEY1		((uint32_t)0x08192a3b)
-#define FLASH_OPTKEYR_KEY2		((uint32_t)0x4c5d6e7f)
-
-/* --- FLASH registers ----------------------------------------------------- */
+#define FLASH_KEYR_KEY1			0x45670123UL
+#define FLASH_KEYR_KEY2			0xcdef89abUL
+#define FLASH_OPTKEYR_KEY1		0x08192a3bUL
+#define FLASH_OPTKEYR_KEY2		0x4c5d6e7fUL
 
 /* --- FLASH_ACR values ---------------------------------------------------- */
 
@@ -83,22 +81,6 @@
 #define FLASH_ACR_PRFTEN		(1 << 8)
 
 #define FLASH_ACR_LATENCY_MASK		0x0f
-#define FLASH_ACR_LATENCY_0WS		0x00
-#define FLASH_ACR_LATENCY_1WS		0x01
-#define FLASH_ACR_LATENCY_2WS		0x02
-#define FLASH_ACR_LATENCY_3WS		0x03
-#define FLASH_ACR_LATENCY_4WS		0x04
-#define FLASH_ACR_LATENCY_5WS		0x05
-#define FLASH_ACR_LATENCY_6WS		0x06
-#define FLASH_ACR_LATENCY_7WS		0x07
-#define FLASH_ACR_LATENCY_8WS		0x08
-#define FLASH_ACR_LATENCY_9WS		0x09
-#define FLASH_ACR_LATENCY_10WS		0x0a
-#define FLASH_ACR_LATENCY_11WS		0x0b
-#define FLASH_ACR_LATENCY_12WS		0x0c
-#define FLASH_ACR_LATENCY_13WS		0x0d
-#define FLASH_ACR_LATENCY_14WS		0x0e
-#define FLASH_ACR_LATENCY_15WS		0x0f
 
 /* --- FLASH_SR values ----------------------------------------------------- */
 

@@ -19,7 +19,7 @@ const struct rcc_clock_scale rcc_3v3[RCC_CLOCK_3V3_END] = {
 		.ppre2 = RCC_CFGR_PPRE_DIV_2,
 		.vos_scale = PWR_SCALE1,
 		.overdrive = 1,
-		.flash_waitstates = FLASH_ACR_LATENCY_7WS,
+		.flash_waitstates = 7,
 		.ahb_frequency = 216000000,
 		.apb1_frequency = 54000000,
 		.apb2_frequency = 108000000,
@@ -33,7 +33,7 @@ const struct rcc_clock_scale rcc_3v3[RCC_CLOCK_3V3_END] = {
 		.ppre2 = RCC_CFGR_PPRE_DIV_2,
 		.vos_scale = PWR_SCALE2,
 		.overdrive = 1,
-		.flash_waitstates = FLASH_ACR_LATENCY_5WS,
+		.flash_waitstates = 5,
 		.ahb_frequency = 168000000,
 		.apb1_frequency = 42000000,
 		.apb2_frequency = 84000000,
@@ -47,7 +47,7 @@ const struct rcc_clock_scale rcc_3v3[RCC_CLOCK_3V3_END] = {
 		.ppre2 = RCC_CFGR_PPRE_DIV_2,
 		.vos_scale = PWR_SCALE3,
 		.overdrive = 0,
-		.flash_waitstates = FLASH_ACR_LATENCY_3WS,
+		.flash_waitstates = 3,
 		.ahb_frequency = 120000000,
 		.apb1_frequency = 30000000,
 		.apb2_frequency = 60000000,
@@ -61,7 +61,7 @@ const struct rcc_clock_scale rcc_3v3[RCC_CLOCK_3V3_END] = {
 		.ppre2 = RCC_CFGR_PPRE_DIV_2,
 		.vos_scale = PWR_SCALE3,
 		.overdrive = 0,
-		.flash_waitstates = FLASH_ACR_LATENCY_2WS,
+		.flash_waitstates = 2,
 		.ahb_frequency = 72000000,
 		.apb1_frequency = 18000000,
 		.apb2_frequency = 36000000,
@@ -75,7 +75,7 @@ const struct rcc_clock_scale rcc_3v3[RCC_CLOCK_3V3_END] = {
 		.ppre2 = RCC_CFGR_PPRE_DIV_2,
 		.vos_scale = PWR_SCALE3,
 		.overdrive = 0,
-		.flash_waitstates = FLASH_ACR_LATENCY_1WS,
+		.flash_waitstates = 1,
 		.ahb_frequency = 48000000,
 		.apb1_frequency = 24000000,
 		.apb2_frequency = 24000000,
@@ -89,7 +89,7 @@ const struct rcc_clock_scale rcc_3v3[RCC_CLOCK_3V3_END] = {
 		.ppre2 = RCC_CFGR_PPRE_DIV_NONE,
 		.vos_scale = PWR_SCALE3,
 		.overdrive = 0,
-		.flash_waitstates = FLASH_ACR_LATENCY_0WS,
+		.flash_waitstates = 0,
 		.ahb_frequency = 24000000,
 		.apb1_frequency = 24000000,
 		.apb2_frequency = 24000000,
@@ -282,42 +282,6 @@ void rcc_css_disable(void)
 {
 	RCC_CR &= ~RCC_CR_CSSON;
 }
-
-void rcc_osc_bypass_enable(enum rcc_osc osc)
-{
-	switch (osc) {
-	case RCC_HSE:
-		RCC_CR |= RCC_CR_HSEBYP;
-		break;
-	case RCC_LSE:
-		RCC_BDCR |= RCC_BDCR_LSEBYP;
-		break;
-	case RCC_PLL:
-	case RCC_HSI:
-	case RCC_LSI:
-		/* Do nothing, only HSE/LSE allowed here. */
-		break;
-	}
-}
-
-void rcc_osc_bypass_disable(enum rcc_osc osc)
-{
-	switch (osc) {
-	case RCC_HSE:
-		RCC_CR &= ~RCC_CR_HSEBYP;
-		break;
-	case RCC_LSE:
-		RCC_BDCR &= ~RCC_BDCR_LSEBYP;
-		break;
-	case RCC_PLL:
-	case RCC_HSI:
-	case RCC_LSI:
-		/* Do nothing, only HSE/LSE allowed here. */
-		break;
-	}
-}
-
-
 
 void rcc_set_sysclk_source(uint32_t clk)
 {

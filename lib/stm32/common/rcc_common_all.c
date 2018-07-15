@@ -41,7 +41,7 @@ static void periph_clock_enable_delay(void)
 		defined(STM32F3) || defined(STM32F4) || defined(STM32L0) || \
 		defined(STM32L1) || defined(STM32L4)
 		// For M0/0+/3/4, a DSB instruction is sufficient in all cases
-		asm volatile("dsb":::"memory");
+		__asm__ volatile("dsb":::"memory");
 	#elif defined(STM32F7)
 		/* TODO: Enable this once we have clock setup functions for F7*/
 		#if 0
@@ -54,8 +54,8 @@ static void periph_clock_enable_delay(void)
 		for (uint32_t i = 0; i < delay_cycles; ++i)
 		{
 			// Cortex-M7 is dual issue, so we need 2 NOPs per cycle
-			asm volatile("nop":::"memory");
-			asm volatile("nop":::"memory");
+			__asm__ volatile("nop":::"memory");
+			__asm__ volatile("nop":::"memory");
 		}
 		#endif
 	#else

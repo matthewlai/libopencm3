@@ -1,14 +1,5 @@
-/** @defgroup i2c_defines I2C Defines
-
-@brief <b>Defined Constants and Types for the STM32L4xx I2C </b>
-
-@ingroup STM32L4xx_defines
-
-@version 1.0.0
-
-@date 12 October 2012
-
-LGPL License Terms @ref lgpl_license
+/** @addtogroup flash_file
+ *
  */
 
 /*
@@ -28,14 +19,40 @@ LGPL License Terms @ref lgpl_license
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBOPENCM3_I2C_H
-#define LIBOPENCM3_I2C_H
-
-#include <libopencm3/stm32/common/i2c_common_v2.h>
-
 /**@{*/
 
-/**@}*/
+#include <libopencm3/stm32/flash.h>
+#include <libopencm3/stm32/common/flash_common_idcache.h>
 
-#endif
+void flash_dcache_enable(void)
+{
+	FLASH_ACR |= FLASH_ACR_DCEN;
+}
+
+void flash_dcache_disable(void)
+{
+	FLASH_ACR &= ~FLASH_ACR_DCEN;
+}
+
+void flash_icache_enable(void)
+{
+	FLASH_ACR |= FLASH_ACR_ICEN;
+}
+
+void flash_icache_disable(void)
+{
+	FLASH_ACR &= ~FLASH_ACR_ICEN;
+}
+
+
+void flash_dcache_reset(void)
+{
+	FLASH_ACR |= FLASH_ACR_DCRST;
+}
+
+void flash_icache_reset(void)
+{
+	FLASH_ACR |= FLASH_ACR_ICRST;
+}
+
 

@@ -1,16 +1,6 @@
-/** @defgroup i2c_defines I2C Defines
-
-@brief <b>Defined Constants and Types for the STM32L4xx I2C </b>
-
-@ingroup STM32L4xx_defines
-
-@version 1.0.0
-
-@date 12 October 2012
-
-LGPL License Terms @ref lgpl_license
+/** @addtogroup flash_defines
+ *
  */
-
 /*
  * This file is part of the libopencm3 project.
  *
@@ -28,14 +18,27 @@ LGPL License Terms @ref lgpl_license
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBOPENCM3_I2C_H
-#define LIBOPENCM3_I2C_H
+#pragma once
 
-#include <libopencm3/stm32/common/i2c_common_v2.h>
+#include <libopencm3/cm3/common.h>
 
-/**@{*/
+BEGIN_DECLS
 
-/**@}*/
+/**
+ * Clear the End of OPeration flag.
+ */
+void flash_clear_eop_flag(void);
 
-#endif
+/**
+ * Clear all status flags.
+ * The number of bits can vary across families.
+ */
+void flash_clear_status_flags(void);
 
+/** Wait until Last Operation has Ended.
+ * This loops indefinitely until an operation (write or erase) has completed by
+ * testing the busy flag
+ */
+void flash_wait_for_last_operation(void);
+
+END_DECLS

@@ -1,14 +1,5 @@
-/** @defgroup i2c_defines I2C Defines
-
-@brief <b>Defined Constants and Types for the STM32L4xx I2C </b>
-
-@ingroup STM32L4xx_defines
-
-@version 1.0.0
-
-@date 12 October 2012
-
-LGPL License Terms @ref lgpl_license
+/** @addtogroup flash_file
+ *
  */
 
 /*
@@ -28,14 +19,34 @@ LGPL License Terms @ref lgpl_license
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBOPENCM3_I2C_H
-#define LIBOPENCM3_I2C_H
-
-#include <libopencm3/stm32/common/i2c_common_v2.h>
-
 /**@{*/
 
-/**@}*/
+#include <libopencm3/stm32/flash.h>
 
-#endif
+void flash_prefetch_enable(void)
+{
+	FLASH_ACR |= FLASH_ACR_PRFTEN;
+}
 
+void flash_prefetch_disable(void)
+{
+	FLASH_ACR &= ~FLASH_ACR_PRFTEN;
+}
+
+void flash_set_ws(uint32_t ws)
+{
+	uint32_t reg32;
+
+	reg32 = FLASH_ACR;
+	reg32 &= ~(FLASH_ACR_LATENCY_MASK << FLASH_ACR_LATENCY_SHIFT);
+	reg32 |= (ws << FLASH_ACR_LATENCY_SHIFT);
+	FLASH_ACR = reg32;
+}
+
+void flash_unlock_option_bytes(void)
+{
+	FLASH_OPTKEYR = FLASH_OPTKEYR_KEY1;
+	FLASH_OPTKEYR = FLASH_OPTKEYR_KEY2;
+}
+
+/*@}*/

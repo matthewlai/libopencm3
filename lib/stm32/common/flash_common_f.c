@@ -1,14 +1,5 @@
-/** @defgroup i2c_defines I2C Defines
-
-@brief <b>Defined Constants and Types for the STM32L4xx I2C </b>
-
-@ingroup STM32L4xx_defines
-
-@version 1.0.0
-
-@date 12 October 2012
-
-LGPL License Terms @ref lgpl_license
+/** @addtogroup flash_file
+ *
  */
 
 /*
@@ -28,14 +19,27 @@ LGPL License Terms @ref lgpl_license
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBOPENCM3_I2C_H
-#define LIBOPENCM3_I2C_H
-
-#include <libopencm3/stm32/common/i2c_common_v2.h>
-
 /**@{*/
 
-/**@}*/
+#include <libopencm3/stm32/flash.h>
+#include <libopencm3/stm32/common/flash_common_f.h>
 
-#endif
+
+void flash_unlock(void)
+{
+	/* Authorize the FPEC access. */
+	FLASH_KEYR = FLASH_KEYR_KEY1;
+	FLASH_KEYR = FLASH_KEYR_KEY2;
+}
+
+void flash_lock(void)
+{
+	FLASH_CR |= FLASH_CR_LOCK;
+}
+
+/* The bit number for EOP moves sometimes, but it's always a write 1 to clear */
+void flash_clear_eop_flag(void)
+{
+	FLASH_SR |= FLASH_SR_EOP;
+}
 

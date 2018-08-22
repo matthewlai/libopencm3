@@ -43,8 +43,6 @@ static void periph_clock_enable_delay(void)
 		// For M0/0+/3/4, a DSB instruction is sufficient in all cases
 		__asm__ volatile("dsb":::"memory");
 	#elif defined(STM32F7)
-		/* TODO: Enable this once we have clock setup functions for F7*/
-		#if 0
 		// We don't know which bus is the peripheral on, so we delay
 		// for the slowest. This only works if the user set up clocks
 		// using libopencm3 functions.
@@ -57,7 +55,6 @@ static void periph_clock_enable_delay(void)
 			__asm__ volatile("nop":::"memory");
 			__asm__ volatile("nop":::"memory");
 		}
-		#endif
 	#else
 	#       error "Unknown family. Do we need a delay?"
 	#endif

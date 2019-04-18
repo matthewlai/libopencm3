@@ -54,7 +54,9 @@ static void periph_clock_enable_delay(void)
 			// Cortex-M7 is dual issue, so we need 2 NOPs per cycle
 			__asm__ volatile("nop":::"memory");
 			__asm__ volatile("nop":::"memory");
-		}
+		}	
+	#elif defined(GD32F1X0)
+		// TODO: What to do with GD32?
 	#else
 	#       error "Unknown family. Do we need a delay?"
 	#endif

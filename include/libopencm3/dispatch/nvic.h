@@ -21,6 +21,9 @@
 #elif defined(STM32L4)
 #	include <libopencm3/stm32/l4/nvic.h>
 
+#elif defined(GD32F1X0)
+#	include <libopencm3/gd32/f1x0/nvic.h>
+
 #elif defined(EFM32TG)
 #	include <libopencm3/efm32/tg/nvic.h>
 #elif defined(EFM32G)
@@ -63,6 +66,9 @@
 #elif defined(LM3S) || defined(LM4F)
 /* Yes, we use the same interrupt table for both LM3S and LM4F */
 #	include <libopencm3/lm3s/nvic.h>
+
+#elif defined(MSP432E4)
+#   include <libopencm3/msp432/e4/nvic.h>
 
 #elif defined(VF6XX)
 #	include <libopencm3/vf6xx/nvic.h>

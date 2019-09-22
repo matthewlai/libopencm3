@@ -30,53 +30,16 @@
 The order of header inclusion is important. adc.h includes the device
 specific memorymap.h header before including this header file.*/
 
-/*
- * Common code for F4 and F7 ADCs. The only differences are in external trigger
- * setup (see AN4660).
- */
-
 /** @cond */
 #ifdef LIBOPENCM3_ADC_H
 /** @endcond */
-#ifndef LIBOPENCM3_ADC_COMMON_V3_H
-#define LIBOPENCM3_ADC_COMMON_V3_H
+#ifndef LIBOPENCM3_ADC_COMMON_V1_MULTI_H
+#define LIBOPENCM3_ADC_COMMON_V1_MULTI_H
 
 #include <libopencm3/stm32/common/adc_common_v1.h>
 
 /* --- Convenience macros -------------------------------------------------- */
 
-/* ADC injected channel data offset register x (ADC_JOFRx) (x=1..4) */
-#define ADC_JOFR1(block)		MMIO32((block) + 0x14)
-#define ADC_JOFR2(block)		MMIO32((block) + 0x18)
-#define ADC_JOFR3(block)		MMIO32((block) + 0x1c)
-#define ADC_JOFR4(block)		MMIO32((block) + 0x20)
-
-/* ADC watchdog high threshold register (ADC_HTR) */
-#define ADC_HTR(block)			MMIO32((block) + 0x24)
-
-/* ADC watchdog low threshold register (ADC_LTR) */
-#define ADC_LTR(block)			MMIO32((block) + 0x28)
-
-/* ADC regular sequence register 1 (ADC_SQR1) */
-#define ADC_SQR1(block)			MMIO32((block) + 0x2c)
-
-/* ADC regular sequence register 2 (ADC_SQR2) */
-#define ADC_SQR2(block)			MMIO32((block) + 0x30)
-
-/* ADC regular sequence register 3 (ADC_SQR3) */
-#define ADC_SQR3(block)			MMIO32((block) + 0x34)
-
-/* ADC injected sequence register (ADC_JSQR) */
-#define ADC_JSQR(block)			MMIO32((block) + 0x38)
-
-/* ADC injected data register x (ADC_JDRx) (x=1..4) */
-#define ADC_JDR1(block)			MMIO32((block) + 0x3c)
-#define ADC_JDR2(block)			MMIO32((block) + 0x40)
-#define ADC_JDR3(block)			MMIO32((block) + 0x44)
-#define ADC_JDR4(block)			MMIO32((block) + 0x48)
-
-/* ADC regular data register (ADC_DR) */
-#define ADC_DR(block)			MMIO32((block) + 0x4c)
 
 /* ADC common (shared) registers */
 #define	ADC_COMMON_REGISTERS_BASE	(ADC1_BASE+0x300)
@@ -86,15 +49,6 @@ specific memorymap.h header before including this header file.*/
 
 /* --- ADC Channels ------------------------------------------------------- */
 
-/** @defgroup adc_channel ADC Channel Numbers
- * @ingroup adc_defines
- * Thanks ST! F40x and F41x are on 16, F42x and F43x are on 18!
- *@{*/
-#define ADC_CHANNEL_TEMP_F40	16
-#define ADC_CHANNEL_TEMP_F42	18
-#define ADC_CHANNEL_VREF	17
-#define ADC_CHANNEL_VBAT	18
-/**@}*/
 
 /* --- ADC_SR values ------------------------------------------------------- */
 
@@ -105,8 +59,6 @@ specific memorymap.h header before including this header file.*/
 /* OVR:*//** Overrun */
 #define ADC_SR_OVR			(1 << 5)
 /**@}*/
-
-/* --- ADC_CR1 values specific to STM32F2,4--------------------------------- */
 
 /* OVRIE: Overrun interrupt enable */
 #define ADC_CR1_OVRIE			(1 << 26)
@@ -127,9 +79,6 @@ specific memorymap.h header before including this header file.*/
 
 /* Note: Bits [21:16] are reserved, and must be kept at reset value. */
 
-/* --- ADC_CR1 values (note some of these are defined elsewhere) ----------- */
-#define ADC_CR1_AWDCH_MAX		18
-
 
 /* --- ADC_CR2 values ------------------------------------------------------ */
 
@@ -138,17 +87,17 @@ specific memorymap.h header before including this header file.*/
 
 /* EXTEN[1:0]: External trigger enable for regular channels. */
 /****************************************************************************/
+
+#define ADC_CR2_EXTEN_SHIFT		28
+#define ADC_CR2_EXTEN_MASK		(0x3 << ADC_CR2_EXTEN_SHIFT)
 /** @defgroup adc_trigger_polarity_regular ADC Trigger Polarity
 @ingroup adc_defines
-
 @{*/
-#define ADC_CR2_EXTEN_DISABLED		(0x0 << 28)
-#define ADC_CR2_EXTEN_RISING_EDGE	(0x1 << 28)
-#define ADC_CR2_EXTEN_FALLING_EDGE	(0x2 << 28)
-#define ADC_CR2_EXTEN_BOTH_EDGES	(0x3 << 28)
+#define ADC_CR2_EXTEN_DISABLED		(0x0 << ADC_CR2_EXTEN_SHIFT)
+#define ADC_CR2_EXTEN_RISING_EDGE	(0x1 << ADC_CR2_EXTEN_SHIFT)
+#define ADC_CR2_EXTEN_FALLING_EDGE	(0x2 << ADC_CR2_EXTEN_SHIFT)
+#define ADC_CR2_EXTEN_BOTH_EDGES	(0x3 << ADC_CR2_EXTEN_SHIFT)
 /**@}*/
-#define ADC_CR2_EXTEN_MASK			(0x3 << 28)
-#define ADC_CR2_EXTEN_SHIFT			28
 
 /* EXTSEL[3:0]: External event selection for regular group. */
 /****************************************************************************/
@@ -163,23 +112,22 @@ specific memorymap.h header before including this header file.*/
 
 /* JEXTEN[1:0]: External trigger enable for injected channels. */
 /****************************************************************************/
+#define ADC_CR2_JEXTEN_SHIFT		20
+#define ADC_CR2_JEXTEN_MASK		(0x3 << ADC_CR2_JEXTEN_SHIFT)
 /** @defgroup adc_trigger_polarity_injected ADC Injected Trigger Polarity
 @ingroup adc_defines
-
 @{*/
-#define ADC_CR2_JEXTEN_DISABLED		(0x0 << 20)
-#define ADC_CR2_JEXTEN_RISING_EDGE	(0x1 << 20)
-#define ADC_CR2_JEXTEN_FALLING_EDGE	(0x2 << 20)
-#define ADC_CR2_JEXTEN_BOTH_EDGES	(0x3 << 20)
+#define ADC_CR2_JEXTEN_DISABLED		(0x0 << ADC_CR2_JEXTEN_SHIFT)
+#define ADC_CR2_JEXTEN_RISING_EDGE	(0x1 << ADC_CR2_JEXTEN_SHIFT)
+#define ADC_CR2_JEXTEN_FALLING_EDGE	(0x2 << ADC_CR2_JEXTEN_SHIFT)
+#define ADC_CR2_JEXTEN_BOTH_EDGES	(0x3 << ADC_CR2_JEXTEN_SHIFT)
 /**@}*/
-#define ADC_CR2_JEXTEN_MASK			(0x3 << 20)
-#define ADC_CR2_JEXTEN_SHIFT		20
 
 /* JEXTSEL[3:0]: External event selection for injected group. */
 /****************************************************************************/
 /* Note: Selection values are family-dependent. */
-#define ADC_CR2_JEXTSEL_MASK		(0xF << 16)
 #define ADC_CR2_JEXTSEL_SHIFT		16
+#define ADC_CR2_JEXTSEL_MASK		(0xF << ADC_CR2_JEXTSEL_SHIFT)
 
 /* ALIGN: Data alignement. */
 #define ADC_CR2_ALIGN_RIGHT             (0 << 11)
@@ -208,108 +156,10 @@ specific memorymap.h header before including this header file.*/
  */
 #define ADC_CR2_ADON			(1 << 0)
 
-/* --- ADC_SMPR1 values ---------------------------------------------------- */
-
-#define ADC_SMPR1_SMP17_LSB		21
-#define ADC_SMPR1_SMP16_LSB		18
-#define ADC_SMPR1_SMP15_LSB		15
-#define ADC_SMPR1_SMP14_LSB		12
-#define ADC_SMPR1_SMP13_LSB		9
-#define ADC_SMPR1_SMP12_LSB		6
-#define ADC_SMPR1_SMP11_LSB		3
-#define ADC_SMPR1_SMP10_LSB		0
-#define ADC_SMPR1_SMP17_MSK		(0x7 << ADC_SMPR1_SMP17_LSB)
-#define ADC_SMPR1_SMP16_MSK		(0x7 << ADC_SMPR1_SMP16_LSB)
-#define ADC_SMPR1_SMP15_MSK		(0x7 << ADC_SMPR1_SMP15_LSB)
-#define ADC_SMPR1_SMP14_MSK		(0x7 << ADC_SMPR1_SMP14_LSB)
-#define ADC_SMPR1_SMP13_MSK		(0x7 << ADC_SMPR1_SMP13_LSB)
-#define ADC_SMPR1_SMP12_MSK		(0x7 << ADC_SMPR1_SMP12_LSB)
-#define ADC_SMPR1_SMP11_MSK		(0x7 << ADC_SMPR1_SMP11_LSB)
-#define ADC_SMPR1_SMP10_MSK		(0x7 << ADC_SMPR1_SMP10_LSB)
-
-/* --- ADC_SMPR2 values ---------------------------------------------------- */
-
-#define ADC_SMPR2_SMP9_LSB		27
-#define ADC_SMPR2_SMP8_LSB		24
-#define ADC_SMPR2_SMP7_LSB		21
-#define ADC_SMPR2_SMP6_LSB		18
-#define ADC_SMPR2_SMP5_LSB		15
-#define ADC_SMPR2_SMP4_LSB		12
-#define ADC_SMPR2_SMP3_LSB		9
-#define ADC_SMPR2_SMP2_LSB		6
-#define ADC_SMPR2_SMP1_LSB		3
-#define ADC_SMPR2_SMP0_LSB		0
-#define ADC_SMPR2_SMP9_MSK		(0x7 << ADC_SMPR2_SMP9_LSB)
-#define ADC_SMPR2_SMP8_MSK		(0x7 << ADC_SMPR2_SMP8_LSB)
-#define ADC_SMPR2_SMP7_MSK		(0x7 << ADC_SMPR2_SMP7_LSB)
-#define ADC_SMPR2_SMP6_MSK		(0x7 << ADC_SMPR2_SMP6_LSB)
-#define ADC_SMPR2_SMP5_MSK		(0x7 << ADC_SMPR2_SMP5_LSB)
-#define ADC_SMPR2_SMP4_MSK		(0x7 << ADC_SMPR2_SMP4_LSB)
-#define ADC_SMPR2_SMP3_MSK		(0x7 << ADC_SMPR2_SMP3_LSB)
-#define ADC_SMPR2_SMP2_MSK		(0x7 << ADC_SMPR2_SMP2_LSB)
-#define ADC_SMPR2_SMP1_MSK		(0x7 << ADC_SMPR2_SMP1_LSB)
-#define ADC_SMPR2_SMP0_MSK		(0x7 << ADC_SMPR2_SMP0_LSB)
-
 /* --- ADC_SMPRx values --------------------------------------------------- */
 /****************************************************************************/
-/* ADC_SMPRG ADC Sample Time Selection for Channels */
-/** @defgroup adc_sample_rg ADC Sample Time Selection for All Channels
-@ingroup adc_defines
 
-@{*/
-#define ADC_SMPR_SMP_3CYC		0x0
-#define ADC_SMPR_SMP_15CYC		0x1
-#define ADC_SMPR_SMP_28CYC		0x2
-#define ADC_SMPR_SMP_56CYC		0x3
-#define ADC_SMPR_SMP_84CYC		0x4
-#define ADC_SMPR_SMP_112CYC		0x5
-#define ADC_SMPR_SMP_144CYC		0x6
-#define ADC_SMPR_SMP_480CYC		0x7
-/**@}*/
-
-/* --- ADC_SQR1 values ----------------------------------------------------- */
-
-#define ADC_SQR_MAX_CHANNELS_REGULAR	16
-
-#define ADC_SQR1_SQ16_LSB		15
-#define ADC_SQR1_SQ15_LSB		10
-#define ADC_SQR1_SQ14_LSB		5
-#define ADC_SQR1_SQ13_LSB		0
-#define ADC_SQR1_L_MSK			(0xf << ADC_SQR1_L_LSB)
-#define ADC_SQR1_SQ16_MSK		(0x1f << ADC_SQR1_SQ16_LSB)
-#define ADC_SQR1_SQ15_MSK		(0x1f << ADC_SQR1_SQ15_LSB)
-#define ADC_SQR1_SQ14_MSK		(0x1f << ADC_SQR1_SQ14_LSB)
-#define ADC_SQR1_SQ13_MSK		(0x1f << ADC_SQR1_SQ13_LSB)
-
-/* --- ADC_SQR2 values ----------------------------------------------------- */
-
-#define ADC_SQR2_SQ12_LSB		25
-#define ADC_SQR2_SQ11_LSB		20
-#define ADC_SQR2_SQ10_LSB		15
-#define ADC_SQR2_SQ9_LSB		10
-#define ADC_SQR2_SQ8_LSB		5
-#define ADC_SQR2_SQ7_LSB		0
-#define ADC_SQR2_SQ12_MSK		(0x1f << ADC_SQR2_SQ12_LSB)
-#define ADC_SQR2_SQ11_MSK		(0x1f << ADC_SQR2_SQ11_LSB)
-#define ADC_SQR2_SQ10_MSK		(0x1f << ADC_SQR2_SQ10_LSB)
-#define ADC_SQR2_SQ9_MSK		(0x1f << ADC_SQR2_SQ9_LSB)
-#define ADC_SQR2_SQ8_MSK		(0x1f << ADC_SQR2_SQ8_LSB)
-#define ADC_SQR2_SQ7_MSK		(0x1f << ADC_SQR2_SQ7_LSB)
-
-/* --- ADC_SQR3 values ----------------------------------------------------- */
-
-#define ADC_SQR3_SQ6_LSB		25
-#define ADC_SQR3_SQ5_LSB		20
-#define ADC_SQR3_SQ4_LSB		15
-#define ADC_SQR3_SQ3_LSB		10
-#define ADC_SQR3_SQ2_LSB		5
-#define ADC_SQR3_SQ1_LSB		0
-#define ADC_SQR3_SQ6_MSK		(0x1f << ADC_SQR3_SQ6_LSB)
-#define ADC_SQR3_SQ5_MSK		(0x1f << ADC_SQR3_SQ5_LSB)
-#define ADC_SQR3_SQ4_MSK		(0x1f << ADC_SQR3_SQ4_LSB)
-#define ADC_SQR3_SQ3_MSK		(0x1f << ADC_SQR3_SQ3_LSB)
-#define ADC_SQR3_SQ2_MSK		(0x1f << ADC_SQR3_SQ2_LSB)
-#define ADC_SQR3_SQ1_MSK		(0x1f << ADC_SQR3_SQ1_LSB)
+#define ADC_SQRx_MASK		0x1f
 
 /* --- ADC_JDRx, ADC_DR values --------------------------------------------- */
 
@@ -389,20 +239,6 @@ specific memorymap.h header before including this header file.*/
 #define ADC_CCR_VBATE				(1 << 22)
 
 /* Bit 18:21 reserved, must be kept at reset value. */
-
-/* ADCPRE: ADC prescaler. */
-/****************************************************************************/
-/** @defgroup adc_ccr_adcpre ADC Prescale
-@ingroup adc_defines
-
-@{*/
-#define ADC_CCR_ADCPRE_BY2		(0x0 << 16)
-#define ADC_CCR_ADCPRE_BY4		(0x1 << 16)
-#define ADC_CCR_ADCPRE_BY6		(0x2 << 16)
-#define ADC_CCR_ADCPRE_BY8		(0x3 << 16)
-/**@}*/
-#define ADC_CCR_ADCPRE_MASK		(0x3 << 16)
-#define ADC_CCR_ADCPRE_SHIFT		16
 
 /* DMA: Direct memory access mode for multi ADC mode. */
 /****************************************************************************/
@@ -516,7 +352,6 @@ specific memorymap.h header before including this header file.*/
 BEGIN_DECLS
 
 void adc_set_clk_prescale(uint32_t prescaler);
-void adc_set_multi_mode(uint32_t mode);
 void adc_enable_external_trigger_regular(uint32_t adc, uint32_t trigger,
 					 uint32_t polarity);
 void adc_enable_external_trigger_injected(uint32_t adc, uint32_t trigger,
@@ -533,8 +368,6 @@ void adc_set_dma_continue(uint32_t adc);
 void adc_set_dma_terminate(uint32_t adc);
 void adc_enable_temperature_sensor(void);
 void adc_disable_temperature_sensor(void);
-void adc_enable_vbat_sensor(void);
-void adc_disable_vbat_sensor(void);
 
 END_DECLS
 

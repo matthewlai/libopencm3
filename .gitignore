@@ -31,6 +31,7 @@ doc/*/Doxyfile
 doc/*/DoxygenLayout_*.xml
 doc/*/doxy.sourcelist
 include/libopencmsis/efm32/
+include/libopencmsis/gd32/
 include/libopencmsis/lm3s/
 include/libopencmsis/lpc13xx/
 include/libopencmsis/lpc17xx/
@@ -38,6 +39,7 @@ include/libopencmsis/lpc43xx/
 include/libopencmsis/msp432/
 include/libopencmsis/sam/
 include/libopencmsis/stm32/
+include/libopencmsis/swm050/
 include/libopencmsis/vf6xx/
 
 # Editor/IDE config files
@@ -45,6 +47,8 @@ nbproject/
 .idea/
 .project
 locm3.sublime-workspace
+.cproject
+.settings
 
 # cscope databases
 cscope.out

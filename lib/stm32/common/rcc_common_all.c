@@ -42,7 +42,7 @@ static void periph_clock_enable_delay(void)
 
 	#if 	defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || \
 		defined(STM32F3) || defined(STM32F4) || defined(STM32L0) || \
-		defined(STM32L1) || defined(STM32L4)
+		defined(STM32L1) || defined(STM32L4) || defined(STM32G0)
 		// For M0/0+/3/4, a DSB instruction is sufficient in all cases
 		__asm__ volatile("dsb":::"memory");
 	#elif defined(STM32F7)

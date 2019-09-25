@@ -19,20 +19,7 @@
 
 #include <libopencm3/stm32/desig.h>
 
-uint16_t desig_get_flash_size(void)
-{
-	return DESIG_FLASH_SIZE;
-}
-
-void desig_get_unique_id(uint32_t *result)
-{
-	*result++ = DESIG_UNIQUE_ID2;
-	*result++ = DESIG_UNIQUE_ID1;
-	*result = DESIG_UNIQUE_ID0;
-}
-
-void desig_get_unique_id_as_string(char *string,
-				   unsigned int string_len)
+void desig_get_unique_id_as_string(char *string, unsigned int string_len)
 {
 	int i, len;
 	uint32_t uid_buf[3];

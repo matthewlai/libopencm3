@@ -25,13 +25,13 @@ uint16_t desig_get_flash_size(void)
   uint32_t device_id = DBGMCU_IDCODE & DBGMCU_IDCODE_DEV_ID_MASK;
   uint32_t* flash_size_base = 0;
   switch (device_id) {
-    case 449:
+    case 0x0449:
       flash_size_base = (uint32_t*)DESIG_FLASH_SIZE_BASE_449;
       break;
-    case 451:
+    case 0x0451:
       flash_size_base = (uint32_t*)DESIG_FLASH_SIZE_BASE_451;
       break;
-    case 452:
+    case 0x0452:
       flash_size_base = (uint32_t*)DESIG_FLASH_SIZE_BASE_452;
       break;
   }
@@ -49,13 +49,13 @@ void desig_get_unique_id(uint32_t *result)
   uint32_t device_id = DBGMCU_IDCODE & DBGMCU_IDCODE_DEV_ID_MASK;
   uint32_t* uid_base = 0;
   switch (device_id) {
-    case 449:
+    case 0x0449:
       uid_base = (uint32_t*)DESIG_UNIQUE_ID_BASE_449;
       break;
-    case 451:
+    case 0x0451:
       uid_base = (uint32_t*)DESIG_UNIQUE_ID_BASE_451;
       break;
-    case 452:
+    case 0x0452:
       uid_base = (uint32_t*)DESIG_UNIQUE_ID_BASE_452;
       break;
   }
